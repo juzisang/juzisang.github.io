@@ -1,8 +1,8 @@
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
-.idea
-node_modules
+/.idea
+/node_modules
 next-prod
 /public
 /.deploy_git
