@@ -3,7 +3,7 @@ Thumbs.db
 ehthumbs.db
 .idea
 node_modules
-/themes/next-prod
+next-prod
 /public
 /.deploy_git
 
