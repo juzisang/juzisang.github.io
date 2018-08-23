@@ -7,7 +7,7 @@ tags:
  - Linux
  - Frp
  - 群晖
-thumbnail: http://odlhbbkmh.bkt.clouddn.com/18-8-23/99282303.jpg
+thumbnail: /images/1535020185186.png
 ---
 
 ## 准备
@@ -73,7 +73,7 @@ auth_token = token
 ## 群晖配置
 
 ### 开启ssh
-![](http://odlhbbkmh.bkt.clouddn.com/18-8-23/99282303.jpg)
+![images](/images/1535020185186.png)
 
 ### ssh进入群晖
 ``` bash
