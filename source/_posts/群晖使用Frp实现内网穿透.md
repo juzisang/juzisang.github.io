@@ -7,6 +7,7 @@ tags:
  - Linux
  - Frp
  - 群晖
+thumbnail: http://odlhbbkmh.bkt.clouddn.com/18-8-23/99282303.jpg
 ---
 
 ## 准备
