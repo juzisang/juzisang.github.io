@@ -7,14 +7,14 @@ title: 橘子的Blog
 subtitle: Blog
 description: 记录一些知识
 keywords: javascript,nodejs,android,linux,juzisang,blog
-author: John Doe
+author: juzisang
 language: en
 timezone: Asia/Shanghai
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://www.juzisang.top/
+url: https://www.juzisang.com/
 root: /
-permalink: :year/:month/:day/:title/
+permalink: passages/:title/
 ? permalink_defaults
 
 # Directory
@@ -94,7 +94,7 @@ markdown:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: hexo-theme-icarus
+theme: theme-bmw
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html

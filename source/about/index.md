@@ -1,4 +1,6 @@
-title: "About"
-layout: "page"
 ---
-
+title: about
+type: "about"
+categories:
+tags:
+---
