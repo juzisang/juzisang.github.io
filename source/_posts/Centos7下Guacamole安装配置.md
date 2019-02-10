@@ -6,7 +6,6 @@ categories:
 tags:
  - Linux
  - Guacamole
-thumbnail: /images/1535020262371.png
 ---
 
 ## 介绍
