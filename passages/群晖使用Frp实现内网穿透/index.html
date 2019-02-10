@@ -238,22 +238,31 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <h2 id="vps设置"><a class="headerlink" href="#vps设置"></a>VPS设置</h2>
-<h3 id="下载frp"><a class="headerlink" href="#下载frp"></a>下载Frp</h3>
-<p>我这是使用的是64位的 ubuntu 系统的，如果需要其他的，请自行在 <a href="https://github.com/fatedier/frp/releases" target="_blank" rel="noopener">Github</a> 上下载对应的版本</p>
+      </li>
+</ul>
+<h2 id="准备-v2"><a class="headerlink" href="#准备-v2"></a>准备</h2>
+<ul>
+<li>群晖</li>
+<li>拥有外网 ip 的 vps</li>
+<li><a href="https://github.com/fatedier/frp" target="_blank" rel="noopener">frp</a></li>
+<li>域名（不是必须，你也可以用 ip 来访问）</li>
+</ul>
+<h2 id="vps-设置"><a class="headerlink" href="#vps-设置"></a>VPS 设置</h2>
+<h3 id="下载-frp"><a class="headerlink" href="#下载-frp"></a>下载 Frp</h3>
+<p>我这是使用的是 64 位的 ubuntu 系统的，如果需要其他的，请自行在 <a href="https://github.com/fatedier/frp/releases" target="_blank" rel="noopener">Github</a> 上下载对应的版本</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 下载</span><br><span class="line">wget https://github.com/fatedier/frp/releases/download/v0.13.0/frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 解压</span><br><span class="line">tar -zxvf frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 进去frp目录</span><br><span class="line"><span class="built_in">cd</span> frp_0.13.0_linux_amd64</span><br><span class="line">// 删除不需要的文件</span><br><span class="line">rm -rf frpc frpc.ini frpc_full.ini</span><br></pre></td></tr></table></figure>
-<h3 id="frps配置"><a class="headerlink" href="#frps配置"></a>Frps配置</h3>
+<h3 id="frps-配置"><a class="headerlink" href="#frps-配置"></a>Frps 配置</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7000</span><br><span class="line">max_pool_count = 5</span><br><span class="line">authentication_timeout = 900</span><br><span class="line"></span><br><span class="line"># 管理端 进入frp自带的web管理界面的帐号密码</span><br><span class="line">dashboard_port = 7500</span><br><span class="line">dashboard_user = user</span><br><span class="line">dashboard_pwd = pwd</span><br><span class="line"></span><br><span class="line"># ssh端口 auth_token就是密钥，随便填个</span><br><span class="line">[ssh]</span><br><span class="line">listen_port = 6000</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 群晖网页</span><br><span class="line">[dms]</span><br><span class="line">listen_port = 5000</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 群晖</span><br><span class="line">[cloud_station]</span><br><span class="line">listen_port = 6690</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line">[ds_photo]</span><br><span class="line">listen_port = 8080</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 域名</span><br><span class="line"># vhost_http_port = 80</span><br><span class="line"># subdomain_host = juzisang.com</span><br></pre></td></tr></table></figure>
 <h3 id="启动"><a class="headerlink" href="#启动"></a>启动</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure>
 <h2 id="群晖配置"><a class="headerlink" href="#群晖配置"></a>群晖配置</h2>
-<h3 id="开启ssh"><a class="headerlink" href="#开启ssh"></a>开启ssh</h3>
-<p><img src="/images/1535020185186.png" alt="images"></p>
-<h3 id="ssh进入群晖"><a class="headerlink" href="#ssh进入群晖"></a>ssh进入群晖</h3>
+<h3 id="开启-ssh"><a class="headerlink" href="#开启-ssh"></a>开启 ssh</h3>
+<p><img src="/images/%E7%BE%A4%E6%99%96%E4%BD%BF%E7%94%A8Frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/1535020185186.png" alt="images"></p>
+<h3 id="ssh-进入群晖"><a class="headerlink" href="#ssh-进入群晖"></a>ssh 进入群晖</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// ssh进入群晖</span><br><span class="line">ssh juzisang@群晖局域网ip</span><br><span class="line">// 切换root用户</span><br><span class="line">sudo -s</span><br></pre></td></tr></table></figure>
-<h3 id="下载frp-v2"><a class="headerlink" href="#下载frp-v2"></a>下载Frp</h3>
+<h3 id="下载-frp-v2"><a class="headerlink" href="#下载-frp-v2"></a>下载 Frp</h3>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 下载</span><br><span class="line">wget https://github.com/fatedier/frp/releases/download/v0.13.0/frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 解压</span><br><span class="line">tar -zxvf frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 进去frp目录</span><br><span class="line"><span class="built_in">cd</span> frp_0.13.0_linux_amd64</span><br><span class="line">// 删除不需要的文件</span><br><span class="line">rm -rf frps frps.ini frps_full.ini</span><br></pre></td></tr></table></figure>
-<h3 id="frpc配置"><a class="headerlink" href="#frpc配置"></a>Frpc配置</h3>
+<h3 id="frpc-配置"><a class="headerlink" href="#frpc-配置"></a>Frpc 配置</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = xx.xx.xx.xx</span><br><span class="line">server_port = 7000</span><br><span class="line">// frps中填的</span><br><span class="line">auth_token = token</span><br><span class="line">pool_count = 1</span><br><span class="line"></span><br><span class="line"># ssh</span><br><span class="line">[ssh]</span><br><span class="line">type = tcp</span><br><span class="line">// 群晖局域网ip</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">// 本地端口</span><br><span class="line">local_port = 22</span><br><span class="line">// 穿透到vps中的端口</span><br><span class="line">remote_port = 6000</span><br><span class="line"></span><br><span class="line"># 群晖网页</span><br><span class="line">[dms]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 5000</span><br><span class="line">remote_port = 5000</span><br><span class="line"># subdomain = nas</span><br><span class="line"></span><br><span class="line"># 群晖同步</span><br><span class="line">[cloud_station]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 6690</span><br><span class="line">remote_port = 6690</span><br><span class="line"></span><br><span class="line"># 群晖照片</span><br><span class="line">[ds_photo]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 80</span><br><span class="line">remote_port = 8080</span><br></pre></td></tr></table></figure>
 <h3 id="启动-v2"><a class="headerlink" href="#启动-v2"></a>启动</h3>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure>
@@ -376,6 +385,12 @@
 
 
   <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/passages/自定义九宫格手势解锁/" target="_self">自定义九宫格手势解锁</a>
+      </div>
     
     
       <div class="nav-next">

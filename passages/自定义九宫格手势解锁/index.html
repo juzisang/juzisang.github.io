@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>自定义九宫格手势解锁 | 橘子的Blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Android,Android,CustomView," />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="记录一些知识">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">橘子的Blog</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_self"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/JuZiSang" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/ju-zi-sang-88-97/activities" 
+                    target="_blank"
+                  >
+                    知乎
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>自定义九宫格手势解锁</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2016-04-26
+    </span>
+    
+      <span>
+        分类 : 
+          <a href="/categories/Android/">
+            Android
+          </a>
+      </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="自定义九宫格手势解锁"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <p>项目中用到手势解锁，然而没有在 GitHub 上找到想要的样式= =，只好自己来定义了，下面来看代码~~</p>
+<p>基本上很多应用的手势解锁全都是九宫格的，内部内就是九个小圈圈而已。那么我们就先来自定义这个小圈圈吧~</p>
+<h2 id="状态"><a class="headerlink" href="#状态"></a>状态</h2>
+<p>圈圈的颜色选择状态有大致有三种状态，所以我定义了一个枚举来区分</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.juzisang.com.library;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by 橘子桑 on 2016/3/27.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> LockState &#123;</span><br><span class="line">    SELECT_STATE,<span class="comment">//选中</span></span><br><span class="line">    ERRER_STATE, <span class="comment">//错误</span></span><br><span class="line">    DEFAULT_COLOR <span class="comment">//默认</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="圆圈-view"><a class="headerlink" href="#圆圈-view"></a>圆圈 View</h2>
+<p>圈圈分为边框，内部填充色，还有内部圆。所以我定义了三个画笔来区分。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.juzisang.com.library;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.res.TypedArray;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Canvas;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Color;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Paint;</span><br><span class="line"><span class="keyword">import</span> android.util.AttributeSet;</span><br><span class="line"><span class="keyword">import</span> android.view.View;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by 橘子桑 on 2016/3/27.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MarkerView</span> <span class="keyword">extends</span> <span class="title">View</span> </span>&#123;</span><br><span class="line">    <span class="comment">//是否显示内部的圈圈</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mInsideNodeShow;</span><br><span class="line">    <span class="comment">//宽度</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mContentWidth;</span><br><span class="line">    <span class="comment">//宽度</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mContentRadius;</span><br><span class="line">    <span class="comment">//选中状态</span></span><br><span class="line">    <span class="keyword">protected</span> LockState mCurrentState = LockState.DEFAULT_COLOR;</span><br><span class="line">    <span class="comment">//画边框画圆的的画笔</span></span><br><span class="line">    <span class="keyword">private</span> Paint mNodeFramePaint;</span><br><span class="line">    <span class="keyword">private</span> Paint mNodeCirclePaint;</span><br><span class="line">    <span class="keyword">private</span> Paint mNodeFullPaint;</span><br><span class="line">    <span class="comment">//默认的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mDefaultColor = Color.parseColor(<span class="string">"#757575"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mDefailtFullColor = Color.parseColor(<span class="string">"#64757575"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mNodeDefaultColor = Color.parseColor(<span class="string">"#757575"</span>);</span><br><span class="line">    <span class="comment">//选中的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mSelectColor = Color.parseColor(<span class="string">"#7ECEF4"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameSelectFullColor = Color.parseColor(<span class="string">"#647ECEF4"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mNodeSelectColor = Color.parseColor(<span class="string">"#7ECEF4"</span>);</span><br><span class="line">    <span class="comment">//错误时候的颜色</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mErrerColor = Color.parseColor(<span class="string">"#EC6941"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mErrerFullColor = Color.parseColor(<span class="string">"#64EC6941"</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mErrerNodeColor = Color.parseColor(<span class="string">"#EC6941"</span>);</span><br><span class="line">    <span class="comment">//边框的宽度</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mFrameLineWidth;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mNodeRadius;</span><br><span class="line">    <span class="comment">//每个圈圈的内边距</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mNodePadding;</span><br><span class="line">    <span class="comment">//触摸有效的范围</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mTouchRatio;</span><br><span class="line">    <span class="comment">//当前标记的位置</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> mNum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MarkerView</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs);</span><br><span class="line">        initView(context, attrs, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MarkerView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">        initView(context, attrs, defStyleAttr);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//以后外部布局传来的参数</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MarkerView</span><span class="params">(Context context, <span class="keyword">int</span> mDefaultColor, <span class="keyword">int</span> mDefailtFullColor, <span class="keyword">int</span> mNodeDefaultColor,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">int</span> mSelectColor, <span class="keyword">int</span> mFrameSelectFullColor, <span class="keyword">int</span> mNodeSelectColor,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">int</span> mErrerColor, <span class="keyword">int</span> mErrerFullColor, <span class="keyword">int</span> mErrerNodeColor,</span></span></span><br><span class="line"><span class="function"><span class="params">                      <span class="keyword">int</span> mFrameLineWidth, <span class="keyword">int</span> mNodeRadius, <span class="keyword">int</span> mNodePadding, <span class="keyword">boolean</span> insideNodeShow)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context);</span><br><span class="line">        <span class="keyword">this</span>.mInsideNodeShow = insideNodeShow;</span><br><span class="line">        <span class="keyword">this</span>.mDefaultColor = mDefaultColor;</span><br><span class="line">        <span class="keyword">this</span>.mDefailtFullColor = mDefailtFullColor;</span><br><span class="line">        <span class="keyword">this</span>.mNodeDefaultColor = mNodeDefaultColor;</span><br><span class="line">        <span class="keyword">this</span>.mSelectColor = mSelectColor;</span><br><span class="line">        <span class="keyword">this</span>.mFrameSelectFullColor = mFrameSelectFullColor;</span><br><span class="line">        <span class="keyword">this</span>.mNodeSelectColor = mNodeSelectColor;</span><br><span class="line">        <span class="keyword">this</span>.mErrerColor = mErrerColor;</span><br><span class="line">        <span class="keyword">this</span>.mErrerFullColor = mErrerFullColor;</span><br><span class="line">        <span class="keyword">this</span>.mErrerNodeColor = mErrerNodeColor;</span><br><span class="line">        <span class="keyword">this</span>.mFrameLineWidth = mFrameLineWidth;</span><br><span class="line">        <span class="keyword">this</span>.mNodeRadius = mNodeRadius;</span><br><span class="line">        <span class="keyword">this</span>.mNodePadding = mNodePadding;</span><br><span class="line">        <span class="comment">//内边距</span></span><br><span class="line">        setPadding(mNodePadding, mNodePadding, mNodePadding, mNodePadding);</span><br><span class="line">        <span class="comment">//外部圆</span></span><br><span class="line">        mNodeFramePaint = <span class="keyword">new</span> Paint();</span><br><span class="line">        mNodeFramePaint.setColor(mDefaultColor);</span><br><span class="line">        mNodeFramePaint.setAntiAlias(<span class="keyword">true</span>);</span><br><span class="line">        mNodeFramePaint.setStrokeWidth(mFrameLineWidth);</span><br><span class="line">        mNodeFramePaint.setStyle(Paint.Style.STROKE);<span class="comment">//只画出边框</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//内部填充色</span></span><br><span class="line">        mNodeFullPaint = <span class="keyword">new</span> Paint();</span><br><span class="line">        mNodeFullPaint.setColor(mDefailtFullColor);</span><br><span class="line">        mNodeFullPaint.setStyle(Paint.Style.FILL);</span><br><span class="line">        mNodeFullPaint.setAntiAlias(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//内部圆</span></span><br><span class="line">        mNodeCirclePaint = <span class="keyword">new</span> Paint();</span><br><span class="line">        mNodeCirclePaint.setColor(mNodeDefaultColor);</span><br><span class="line">        mNodeCirclePaint.setStyle(Paint.Style.FILL);<span class="comment">//填充</span></span><br><span class="line">        mNodeCirclePaint.setAntiAlias(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//取当前透明度的百分比</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFullAlpha</span><span class="params">(<span class="keyword">int</span> color, <span class="keyword">float</span> ratio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Color.argb((<span class="keyword">int</span>) (Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onSizeChanged</span><span class="params">(<span class="keyword">int</span> w, <span class="keyword">int</span> h, <span class="keyword">int</span> oldw, <span class="keyword">int</span> oldh)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onSizeChanged(w, h, oldw, oldh);</span><br><span class="line">        mContentWidth = getWidth();</span><br><span class="line">        mContentRadius = mContentWidth / <span class="number">2</span> - Math.abs(getPaddingLeft()) - mFrameLineWidth / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span> (mCurrentState) &#123;</span><br><span class="line">            <span class="keyword">case</span> DEFAULT_COLOR: <span class="comment">//默认</span></span><br><span class="line">                mNodeFramePaint.setColor(mDefaultColor);</span><br><span class="line">                mNodeFullPaint.setColor(mDefailtFullColor);</span><br><span class="line">                mNodeCirclePaint.setColor(mNodeDefaultColor);</span><br><span class="line">                <span class="comment">//外圆</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius, mNodeFramePaint);</span><br><span class="line">                <span class="comment">//填充色</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius - mFrameLineWidth / <span class="number">2</span>, mNodeFullPaint);</span><br><span class="line">                <span class="comment">//中心圆</span></span><br><span class="line">                <span class="keyword">if</span> (mInsideNodeShow)</span><br><span class="line">                    canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mNodeRadius, mNodeCirclePaint);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> ERRER_STATE:<span class="comment">//错误</span></span><br><span class="line">                mNodeFramePaint.setColor(mErrerColor);</span><br><span class="line">                mNodeFullPaint.setColor(mErrerFullColor);</span><br><span class="line">                mNodeCirclePaint.setColor(mErrerNodeColor);</span><br><span class="line">                <span class="comment">//外圆</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius, mNodeFramePaint);</span><br><span class="line">                <span class="comment">//填充色</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius - mFrameLineWidth / <span class="number">2</span>, mNodeFullPaint);</span><br><span class="line">                <span class="comment">//中心圆</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mNodeRadius, mNodeCirclePaint);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> SELECT_STATE:<span class="comment">//选中</span></span><br><span class="line">                mNodeFramePaint.setColor(mSelectColor);</span><br><span class="line">                mNodeFullPaint.setColor(mFrameSelectFullColor);</span><br><span class="line">                mNodeCirclePaint.setColor(mNodeSelectColor);</span><br><span class="line">                <span class="comment">//外圆</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius, mNodeFramePaint);</span><br><span class="line">                <span class="comment">//填充色</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mContentRadius - mFrameLineWidth / <span class="number">2</span>, mNodeFullPaint);</span><br><span class="line">                <span class="comment">//中心圆</span></span><br><span class="line">                canvas.drawCircle(mContentWidth / <span class="number">2</span>, mContentWidth / <span class="number">2</span>, mNodeRadius, mNodeCirclePaint);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置状态，并且重绘</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(LockState CurrentState)</span> </span>&#123;</span><br><span class="line">        mCurrentState = CurrentState;</span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//是否选中</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isHighLighted</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (mCurrentState == LockState.SELECT_STATE || mCurrentState == LockState.ERRER_STATE) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//中心点X</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCenterX</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (getLeft() + getRight()) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//中心点Y</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCenterY</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (getTop() + getBottom()) / <span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//设置圈圈在手势锁当中的位置</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">setNum</span><span class="params">(<span class="keyword">int</span> num)</span> </span>&#123;</span><br><span class="line">        mNum = num;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">int</span> <span class="title">getNum</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mNum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上就是一个简单的圆了</p>
+<h2 id="自定义九宫格-view-属性"><a class="headerlink" href="#自定义九宫格-view-属性"></a>自定义九宫格 View 属性</h2>
+<p>那么，自定义 View 当然会有自定义属性，所以有这么多 T0T，不要问我为什么这么多属性，任性= =（其实我还想写更多），<a href="http://blog.csdn.net/lmj623565791/article/details/24252901" target="_blank" rel="noopener">自定义属性的方法</a></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!-- 线的颜色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"lineColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 线的宽度 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"lineWidth"</span> <span class="attr">format</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--默认颜色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"defaultColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--默认时的填充色--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"defaultFullColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--默认内部圆颜色--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"defaultNodeColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- ======================================================= --&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 边框选中时边框的颜色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"selectColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 边框选中时内部的填充色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"selectFrameFullColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--内部圆圈选中时的颜色--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"selectNodeColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- ======================================================= --&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 错误的颜色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"errorColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--错误时内部的填充色--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"errorFullColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 错误时的颜色 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"errorNodeColor"</span> <span class="attr">format</span>=<span class="string">"color"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- ======================================================= --&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--边框的的宽度--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"frameLineWidth"</span> <span class="attr">format</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 内部圆圈的宽度 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"nodeRadius"</span> <span class="attr">format</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--内边距--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"nodePadding"</span> <span class="attr">format</span>=<span class="string">"dimension"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!--触摸有效的比例--&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"touchRatio"</span> <span class="attr">format</span>=<span class="string">"float"</span> /&gt;</span></span><br><span class="line">   <span class="comment">&lt;!-- 是否显示内部的圆圈 --&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">attr</span> <span class="attr">name</span>=<span class="string">"insideNodeShow"</span> <span class="attr">format</span>=<span class="string">"boolean"</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="框框-view"><a class="headerlink" href="#框框-view"></a>框框 View</h2>
+<p>LockView 的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.juzisang.com.library;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> android.content.Context;</span><br><span class="line"><span class="keyword">import</span> android.content.res.TypedArray;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Canvas;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Color;</span><br><span class="line"><span class="keyword">import</span> android.graphics.Paint;</span><br><span class="line"><span class="keyword">import</span> android.util.AttributeSet;</span><br><span class="line"><span class="keyword">import</span> android.view.MotionEvent;</span><br><span class="line"><span class="keyword">import</span> android.view.ViewGroup;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Created by 橘子桑 on 2016/3/27.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LockView</span> <span class="keyword">extends</span> <span class="title">ViewGroup</span> </span>&#123;</span><br><span class="line">    <span class="comment">//画连接线的画笔</span></span><br><span class="line">    <span class="keyword">private</span> Paint mLinePaint;</span><br><span class="line">    <span class="comment">//可以触摸的区域百分比</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">float</span> mTouchRatio;</span><br><span class="line">    <span class="comment">//线的颜色</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mLineColor;</span><br><span class="line">    <span class="comment">//先的宽度</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">float</span> mLineWidth;</span><br><span class="line">    <span class="comment">//已经选中了的View</span></span><br><span class="line">    ArrayList&lt;MarkerView&gt; mNodeViews = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    <span class="comment">//存储密码</span></span><br><span class="line">    <span class="keyword">protected</span> StringBuilder pawBuilder = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">    <span class="comment">//当前手指触摸的x坐标</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">float</span> x;</span><br><span class="line">    <span class="comment">//当前手指触摸的y坐标</span></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">float</span> y;</span><br><span class="line">    <span class="comment">//回调</span></span><br><span class="line">    <span class="keyword">private</span> onLockCallback mOnLockCallback;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mDefaultColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mSelectColor;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">int</span> mErrerColor;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//禁用手势锁</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mLockScreen;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> isTouch;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//是否把连接线绘制在子View的上面</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mLineTop = <span class="keyword">false</span>;</span><br><span class="line">    <span class="comment">//手指离开立即重绘</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> mFingerLeaveRedraw = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LockView</span><span class="params">(Context context)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(context, <span class="keyword">null</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LockView</span><span class="params">(Context context, AttributeSet attrs)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(context, attrs, <span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">LockView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(context, attrs, defStyleAttr);</span><br><span class="line">        initView(context, attrs, defStyleAttr);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initView</span><span class="params">(Context context, AttributeSet attrs, <span class="keyword">int</span> defStyleAttr)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        TypedArray r = context.obtainStyledAttributes(attrs, R.styleable.MarkerView);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">boolean</span> insideNodeShow = r.getBoolean(R.styleable.LockView_insideNodeShow, <span class="keyword">false</span>);</span><br><span class="line">        <span class="comment">//默认的颜色</span></span><br><span class="line">        mDefaultColor = r.getColor(R.styleable.LockView_defaultColor, context.getResources().getColor(android.R.color.holo_blue_dark));</span><br><span class="line">        <span class="keyword">int</span> mDefailtFullColor = r.getColor(R.styleable.LockView_defaultFullColor, getFullAlpha(mDefaultColor, <span class="number">0.3F</span>));</span><br><span class="line">        <span class="keyword">int</span> mNodeDefaultColor = (<span class="keyword">int</span>) r.getColor(R.styleable.LockView_defaultNodeColor, mDefaultColor);</span><br><span class="line">        <span class="comment">//选中的颜色</span></span><br><span class="line">        mSelectColor = (<span class="keyword">int</span>) r.getColor(R.styleable.LockView_selectColor, context.getResources().getColor(android.R.color.holo_blue_light));</span><br><span class="line">        <span class="keyword">int</span> mFrameSelectFullColor = r.getColor(R.styleable.LockView_selectFrameFullColor, getFullAlpha(mSelectColor, <span class="number">0.3F</span>));</span><br><span class="line">        <span class="keyword">int</span> mNodeSelectColor = r.getColor(R.styleable.LockView_selectNodeColor, mSelectColor);</span><br><span class="line">        <span class="comment">//错误时候的颜色</span></span><br><span class="line">        mErrerColor = r.getColor(R.styleable.LockView_errorColor, context.getResources().getColor(android.R.color.holo_red_light));</span><br><span class="line">        <span class="keyword">int</span> mErrerFullColor = r.getColor(R.styleable.LockView_errorFullColor, getFullAlpha(mErrerColor, <span class="number">0.3F</span>));</span><br><span class="line">        <span class="keyword">int</span> mErrerNodeColor = r.getColor(R.styleable.LockView_errorNodeColor, mErrerColor);</span><br><span class="line">        <span class="comment">//圆框变的宽度</span></span><br><span class="line">        <span class="keyword">int</span> mFrameLineWidth = (<span class="keyword">int</span>) r.getDimension(R.styleable.LockView_frameLineWidth, DensityUtils.dip2px(context, <span class="number">5</span>));</span><br><span class="line">        <span class="comment">//内圆的直径</span></span><br><span class="line">        <span class="keyword">int</span> mNodeRadius = (<span class="keyword">int</span>) r.getDimension(R.styleable.LockView_nodeRadius, DensityUtils.dip2px(context, <span class="number">5</span>));</span><br><span class="line">        <span class="comment">//内边距</span></span><br><span class="line">        <span class="keyword">int</span> mNodePadding = (<span class="keyword">int</span>) r.getDimension(R.styleable.LockView_nodePadding, DensityUtils.dip2px(context, <span class="number">10</span>));</span><br><span class="line">        <span class="comment">//触摸有效区域</span></span><br><span class="line">        mTouchRatio = r.getFloat(R.styleable.LockView_touchRatio, mTouchRatio);</span><br><span class="line">        mLineColor = r.getColor(R.styleable.LockView_lineColor, mDefaultColor);</span><br><span class="line">        mLineWidth = r.getDimension(R.styleable.LockView_lineWidth, DensityUtils.dip2px(context, <span class="number">5</span>));</span><br><span class="line">        r.recycle();</span><br><span class="line">        <span class="comment">//设置线的颜色</span></span><br><span class="line">        mLinePaint = <span class="keyword">new</span> Paint(Paint.ANTI_ALIAS_FLAG);</span><br><span class="line">        mLinePaint.setColor(mLineColor);</span><br><span class="line">        mLinePaint.setStyle(Paint.Style.STROKE);</span><br><span class="line">        mLinePaint.setStrokeWidth(mLineWidth);</span><br><span class="line">        mLinePaint.setStrokeCap(Paint.Cap.ROUND);</span><br><span class="line">        mLinePaint.setStrokeJoin(Paint.Join.ROUND);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</span><br><span class="line">            MarkerView view = <span class="keyword">new</span> MarkerView(context, mDefaultColor, mDefailtFullColor, mNodeDefaultColor, mSelectColor, mFrameSelectFullColor, mNodeSelectColor,</span><br><span class="line">                    mErrerColor, mErrerFullColor, mErrerNodeColor, mFrameLineWidth, mNodeRadius, mNodePadding, insideNodeShow);</span><br><span class="line">            view.setNum(i + <span class="number">1</span>);</span><br><span class="line">            ViewGroup.LayoutParams params = <span class="keyword">new</span> ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);</span><br><span class="line">            view.setLayoutParams(params);</span><br><span class="line">            addView(view);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 清除FLAG，否则 onDraw() 不会调用，原因是 ViewGroup 默认透明背景不需要调用 onDraw()</span></span><br><span class="line">        setWillNotDraw(<span class="keyword">false</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getFullAlpha</span><span class="params">(<span class="keyword">int</span> color, <span class="keyword">float</span> ratio)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Color.argb((<span class="keyword">int</span>) (Color.alpha(color) * ratio), Color.red(color), Color.green(color), Color.blue(color));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onMeasure</span><span class="params">(<span class="keyword">int</span> widthMeasureSpec, <span class="keyword">int</span> heightMeasureSpec)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> size = Math.min(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.getSize(heightMeasureSpec)); <span class="comment">// 测量宽度</span></span><br><span class="line">        setMeasuredDimension(size, size);</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; getChildCount(); i++) &#123;</span><br><span class="line">            measureChild(getChildAt(i), widthMeasureSpec, heightMeasureSpec);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onLayout</span><span class="params">(<span class="keyword">boolean</span> changed, <span class="keyword">int</span> l, <span class="keyword">int</span> t, <span class="keyword">int</span> r, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (changed) &#123;</span><br><span class="line">            <span class="keyword">float</span> areaWidth = (r - l - getPaddingLeft() * <span class="number">2</span>) / <span class="number">3</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; <span class="number">9</span>; n++) &#123;</span><br><span class="line">                MarkerView node = (MarkerView) getChildAt(n);</span><br><span class="line">                <span class="comment">// 获取3*3宫格内坐标</span></span><br><span class="line">                <span class="keyword">int</span> row = n / <span class="number">3</span>;</span><br><span class="line">                <span class="keyword">int</span> col = n % <span class="number">3</span>;</span><br><span class="line">                <span class="comment">//加上内间距</span></span><br><span class="line">                <span class="keyword">int</span> left = (<span class="keyword">int</span>) (getPaddingLeft() + col * areaWidth);</span><br><span class="line">                <span class="keyword">int</span> top = (<span class="keyword">int</span>) (getPaddingTop() + row * areaWidth);</span><br><span class="line">                <span class="keyword">int</span> right = (<span class="keyword">int</span>) (left + areaWidth);</span><br><span class="line">                <span class="keyword">int</span> bottom = (<span class="keyword">int</span>) (top + areaWidth);</span><br><span class="line">                node.layout(left, top, right, bottom);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置连接线是否绘制在子View的上面</span></span><br><span class="line"><span class="comment">     * true 绘制在子View的上面</span></span><br><span class="line"><span class="comment">     * false 绘制在子View的下面</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> isLineTop 设置连接线是否绘制在子View的上面</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLineTop</span><span class="params">(<span class="keyword">boolean</span> isLineTop)</span> </span>&#123;</span><br><span class="line">        mLineTop = isLineTop;</span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置连接线是否绘制在子View的上面</span></span><br><span class="line"><span class="comment">     * true 绘制在子View的上面</span></span><br><span class="line"><span class="comment">     * false 绘制在子View的下面</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">getLineTop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mLineTop;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTouchEvent</span><span class="params">(MotionEvent event)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (getLockScreen()) &#123;</span><br><span class="line">            invalidate();</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">switch</span> (event.getAction()) &#123;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.ACTION_DOWN:</span><br><span class="line">                <span class="comment">//恢复默认</span></span><br><span class="line">                resetDefault();</span><br><span class="line">                x = event.getX();</span><br><span class="line">                y = event.getY();</span><br><span class="line">                isTouch = <span class="keyword">true</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.ACTION_MOVE:</span><br><span class="line">                x = event.getX(); <span class="comment">// 这里要实时记录手指的坐标</span></span><br><span class="line">                y = event.getY();</span><br><span class="line">                MarkerView nodeView = getNodeAt(x, y);</span><br><span class="line">                <span class="comment">//没有选中</span></span><br><span class="line">                <span class="keyword">if</span> (nodeView != <span class="keyword">null</span> &amp;&amp; !nodeView.isHighLighted()) &#123;</span><br><span class="line">                    nodeView.setState(LockState.SELECT_STATE);</span><br><span class="line">                    mNodeViews.add(nodeView);</span><br><span class="line">                    <span class="comment">//进度</span></span><br><span class="line">                    <span class="keyword">if</span> (mOnLockCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">                        pawBuilder.setLength(<span class="number">0</span>);</span><br><span class="line">                        <span class="keyword">for</span> (MarkerView markerView : mNodeViews) &#123;</span><br><span class="line">                            pawBuilder.append(markerView.getNum());</span><br><span class="line">                        &#125;</span><br><span class="line">                        mOnLockCallback.onProgress(pawBuilder.toString(), nodeView.getNum());</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (mNodeViews.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                    invalidate();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> MotionEvent.ACTION_UP:</span><br><span class="line">                LogUtils.i(<span class="string">"手指抬起了"</span>);</span><br><span class="line">                isTouch = <span class="keyword">false</span>;</span><br><span class="line">                pawBuilder.setLength(<span class="number">0</span>);</span><br><span class="line">                <span class="keyword">if</span> (mNodeViews.size() &lt;= <span class="number">0</span>) <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">                pawBuilder.delete(<span class="number">0</span>, pawBuilder.length());</span><br><span class="line">                <span class="keyword">if</span> (mOnLockCallback != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    <span class="keyword">for</span> (MarkerView markerView : mNodeViews) &#123;</span><br><span class="line">                        pawBuilder.append(markerView.getNum());</span><br><span class="line">                    &#125;</span><br><span class="line">                    mOnLockCallback.onFinish(pawBuilder.toString());</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (mFingerLeaveRedraw) &#123;</span><br><span class="line">                    resetDefault();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    invalidate();</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//线画在子view的下面</span></span><br><span class="line">        <span class="keyword">if</span> (!mLineTop) onDrawLock(canvas);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//画子View的地方</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">dispatchDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.dispatchDraw(canvas);</span><br><span class="line">        <span class="comment">//放在这里的原因是，线会被子View挡到</span></span><br><span class="line">        <span class="keyword">if</span> (mLineTop) onDrawLock(canvas);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 画图的方法</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onDrawLock</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//屏幕锁住了，只画起点到终点的</span></span><br><span class="line">        <span class="keyword">if</span> (getLockScreen()) &#123;</span><br><span class="line">            onDrawNodeViewLock(canvas);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (isTouch || mFingerLeaveRedraw) &#123;</span><br><span class="line">            <span class="comment">//从第一个和最后一个的连接线</span></span><br><span class="line">            onDrawNodeViewLock(canvas);</span><br><span class="line">            <span class="comment">//最后一个点，到手指之间的线</span></span><br><span class="line">            <span class="keyword">if</span> (mNodeViews.size() &gt; <span class="number">0</span>) &#123;</span><br><span class="line">                MarkerView lastNode = mNodeViews.get(mNodeViews.size() - <span class="number">1</span>);</span><br><span class="line">                canvas.drawLine(lastNode.getCenterX(), lastNode.getCenterY(), x, y, mLinePaint);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">//如果手指离开屏幕，并且设置了手指离开立即重绘</span></span><br><span class="line">            onDrawNodeViewLock(canvas);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">onDrawNodeViewLock</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//从第一个和最后一个的连接线</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; mNodeViews.size(); i++) &#123;</span><br><span class="line">            MarkerView frontNode = mNodeViews.get(i - <span class="number">1</span>);</span><br><span class="line">            MarkerView backNode = mNodeViews.get(i);</span><br><span class="line">            canvas.drawLine(frontNode.getCenterX(), frontNode.getCenterY(), backNode.getCenterX(), backNode.getCenterY(), mLinePaint);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取给定坐标点的Node，返回null表示当前手指在两个Node之间</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> MarkerView <span class="title">getNodeAt</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; getChildCount(); n++) &#123;</span><br><span class="line">            MarkerView node = (MarkerView) getChildAt(n);</span><br><span class="line">            <span class="comment">//计算触摸区域以外的距离</span></span><br><span class="line">            <span class="keyword">float</span> ratioPadding = (node.getWidth() - (node.getWidth() * mTouchRatio)) / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span> (!(x &gt;= node.getLeft() + ratioPadding &amp;&amp; x &lt; node.getRight() - ratioPadding)) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (!(y &gt;= node.getTop() + ratioPadding &amp;&amp; y &lt; node.getBottom() - ratioPadding)) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> node;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 设置连接线的颜色</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> color 颜色值</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLineColor</span><span class="params">(<span class="keyword">int</span> color)</span> </span>&#123;</span><br><span class="line">        mLinePaint.setColor(color);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 手指离开立即重绘</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setfingerLeaveRedraw</span><span class="params">(<span class="keyword">boolean</span> mFingerLeaveRedraw)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.mFingerLeaveRedraw = mFingerLeaveRedraw;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">getfingerLeaveRedraw</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.mFingerLeaveRedraw;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重置状态 为默认状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resetDefault</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setState(LockState.DEFAULT_COLOR);</span><br><span class="line">        mNodeViews.clear();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重置状态错误状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resetErrer</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setState(LockState.ERRER_STATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 重置为选中状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">resetSelect</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        setState(LockState.SELECT_STATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 锁屏，不允许触摸</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">LockScreen</span><span class="params">(<span class="keyword">boolean</span> isScreen)</span> </span>&#123;</span><br><span class="line">        mLockScreen = isScreen;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">getLockScreen</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> mLockScreen;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setState</span><span class="params">(LockState state)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">switch</span> (state) &#123;</span><br><span class="line">            <span class="keyword">case</span> DEFAULT_COLOR:</span><br><span class="line">            <span class="keyword">case</span> SELECT_STATE:</span><br><span class="line">                setLineColor(mSelectColor);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> ERRER_STATE:</span><br><span class="line">                setLineColor(mErrerColor);</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">int</span> size = mNodeViews.size();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; size; i++) &#123;</span><br><span class="line">            mNodeViews.get(i).setState(state);</span><br><span class="line">        &#125;</span><br><span class="line">        invalidate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setLockCallback</span><span class="params">(onLockCallback lockCallback)</span> </span>&#123;</span><br><span class="line">        mOnLockCallback = lockCallback;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//回调</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">onLockCallback</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onProgress</span><span class="params">(String paw, <span class="keyword">int</span> current)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">void</span> <span class="title">onFinish</span><span class="params">(String paw)</span></span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上注释都写的很清楚了，下面讲一下遇到的一些问题。</p>
+<h2 id="遇到的问题"><a class="headerlink" href="#遇到的问题"></a>遇到的问题</h2>
+<h3 id="画出来的线被上面的圈圈覆盖了"><a class="headerlink" href="#画出来的线被上面的圈圈覆盖了"></a>画出来的线被上面的圈圈覆盖了</h3>
+<p><img src="/images/%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B9%9D%E5%AE%AB%E6%A0%BC%E6%89%8B%E5%8A%BF%E8%A7%A3%E9%94%81/20160404155949303.png" alt=""><br>
+通过百度，知道 ViewGroup 的 onDraw 是画布局中的内容的，画子 View 的的方法在这个方法的后面执行，所以 ViewGroup 的内容会被子 View 覆盖，那么怎么才能把连接线画在子 View 的上面呢，很简单<br>
+只要在画子 View 的方法中执行就好了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//画子View的地方</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">dispatchDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.dispatchDraw(canvas);</span><br><span class="line">        <span class="comment">//放在这里的原因是，线会被子View挡到</span></span><br><span class="line">        <span class="keyword">if</span> (mLineTop) onDrawLock(canvas);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>下面是 View 的 draw()方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@CallSuper</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">draw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">int</span> privateFlags = mPrivateFlags;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">boolean</span> dirtyOpaque = (privateFlags &amp; PFLAG_DIRTY_MASK) == PFLAG_DIRTY_OPAQUE &amp;&amp;</span><br><span class="line">               (mAttachInfo == <span class="keyword">null</span> || !mAttachInfo.mIgnoreDirtyState);</span><br><span class="line">       mPrivateFlags = (privateFlags &amp; ~PFLAG_DIRTY_MASK) | PFLAG_DRAWN;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// Step 1, draw the background, if needed</span></span><br><span class="line">       <span class="keyword">int</span> saveCount;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (!dirtyOpaque) &#123;</span><br><span class="line">           drawBackground(canvas);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// skip step 2 &amp; 5 if possible (common case)</span></span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">int</span> viewFlags = mViewFlags;</span><br><span class="line">       <span class="keyword">boolean</span> horizontalEdges = (viewFlags &amp; FADING_EDGE_HORIZONTAL) != <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">boolean</span> verticalEdges = (viewFlags &amp; FADING_EDGE_VERTICAL) != <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">if</span> (!verticalEdges &amp;&amp; !horizontalEdges) &#123;</span><br><span class="line">           <span class="comment">// Step 3, draw the content</span></span><br><span class="line">           <span class="keyword">if</span> (!dirtyOpaque) onDraw(canvas);</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Step 4, draw the children</span></span><br><span class="line">           <span class="comment">//这里就是画子View的方法了</span></span><br><span class="line">           dispatchDraw(canvas);</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Overlay is part of the content and draws beneath Foreground</span></span><br><span class="line">           <span class="keyword">if</span> (mOverlay != <span class="keyword">null</span> &amp;&amp; !mOverlay.isEmpty()) &#123;</span><br><span class="line">               mOverlay.getOverlayView().dispatchDraw(canvas);</span><br><span class="line">           &#125;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// Step 6, draw decorations (foreground, scrollbars)</span></span><br><span class="line">           onDrawForeground(canvas);</span><br><span class="line"></span><br><span class="line">           <span class="comment">// we're done...</span></span><br><span class="line">           <span class="keyword">return</span>;</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="怎么设置触摸的区域？"><a class="headerlink" href="#怎么设置触摸的区域？"></a>怎么设置触摸的区域？</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取给定坐标点的Node，返回null表示当前手指在两个Node之间</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> MarkerView <span class="title">getNodeAt</span><span class="params">(<span class="keyword">float</span> x, <span class="keyword">float</span> y)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> n = <span class="number">0</span>; n &lt; getChildCount(); n++) &#123;</span><br><span class="line">        MarkerView node = (MarkerView) getChildAt(n);</span><br><span class="line">        <span class="comment">//计算触摸区域以外的距离</span></span><br><span class="line">        <span class="keyword">float</span> ratioPadding = (node.getWidth() - (node.getWidth() * mTouchRatio)) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (!(x &gt;= node.getLeft() + ratioPadding &amp;&amp; x &lt; node.getRight() - ratioPadding)) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!(y &gt;= node.getTop() + ratioPadding &amp;&amp; y &lt; node.getBottom() - ratioPadding)) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>看上面代码，<br>
+根据圆圈的宽度减去可触摸区域的长度除 2，得到可触摸区域距离边框的距的距离。<br>
+光看代码看着有点圆，画个图看一下吧<br>
+<img src="/images/%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B9%9D%E5%AE%AB%E6%A0%BC%E6%89%8B%E5%8A%BF%E8%A7%A3%E9%94%81/20160404162710907.png" alt=""></p>
+<p>画个图是不是清晰很多，只要用 getLeft+边距，和 getRight-边距，就能得到可触摸区域在 x 轴上的范围了，Y 轴同理，不懂的同学自己用笔画一下吧~</p>
+<p>差不多就上面两个问题了<br>
+<img src="/images/%E8%87%AA%E5%AE%9A%E4%B9%89%E4%B9%9D%E5%AE%AB%E6%A0%BC%E6%89%8B%E5%8A%BF%E8%A7%A3%E9%94%81/20160404164051803.gif" alt=""></p>
+<p><a href="http://download.csdn.net/detail/qq_29262849/9480891" target="_blank" rel="noopener">下载地址</a></p>
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Juzisang <br/>
+        
+        原文链接 : <a href="">https://www.juzisang.com/passages/自定义九宫格手势解锁/</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.jpg" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+          <i class="iconfont icon-06tags"></i>标签: 
+          
+          <span class="span--tag">
+            <a href="/tags/Android/">
+              #Android
+            </a>
+          </span>
+          
+          <span class="span--tag">
+            <a href="/tags/CustomView/">
+              #CustomView
+            </a>
+          </span>
+          
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+      <div class="nav-pre">
+        <i class="iconfont icon-prev"></i>
+        上一篇:
+        <a href="/passages/万能适配器/" target="_self">为RecyclerView打造万能适配器，点击事件，5.0水波纹点击效果</a>
+      </div>
+    
+    
+      <div class="nav-next">
+        下一篇:
+        <a href="/passages/群晖使用Frp实现内网穿透/" target="_self">群晖使用Frp实现内网穿透</a>
+        <i class="iconfont icon-next"></i>
+      </div>
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "qyAfO3GTXEdyGYeVXykVuR3H-gzGzoHsz",
+      appKey: "pIlfDQBLigKDyFi9V6BbsbTP",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("qyAfO3GTXEdyGYeVXykVuR3H-gzGzoHsz", "pIlfDQBLigKDyFi9V6BbsbTP");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = true;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2016, 4, 10).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>

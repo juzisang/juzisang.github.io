@@ -238,7 +238,9 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      <p><img src="/images/1535020262371.png" alt="images"></p>
+      <h2 id="介绍"><a class="headerlink" href="#介绍"></a>介绍</h2>
+<p>Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览器就能操作虚拟机，适用于 Chrome、Firefox、IE9+ 等浏览器（浏览器需要支持 HTML5）。只要在一个服务器成功安装 Guancamole，就可以通过访问一个 web 浏览器去操作我们配置好的虚拟机。当然，作为一个开源的项目，我们可以对 Guacamole 做相应的定制修改，使其适配我们的项目需求，比如做成自动登录的，加上项目权限验证等。</p>
+<p><img src="/images/Centos7%E4%B8%8BGuacamole%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE/1535020262371.png" alt="images"></p>
 <h2 id="准备"><a class="headerlink" href="#准备"></a>准备</h2>
 <ul>
 <li>Centos7 x86-64</li>
@@ -272,19 +274,19 @@
 <ul>
 <li>添加进环境变量</li>
 </ul>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"><span class="comment"># 末尾添加</span></span><br><span class="line"><span class="built_in">export</span> GUACAMOLE_HOME=/etc/guacamole</span><br><span class="line"><span class="comment"># 刷新</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br><span class="line"><span class="comment"># 末尾添加</span></span><br><span class="line"><span class="built_in">export</span> GUACAMOLE_HOME=/etc/guacamole</span><br><span class="line"><span class="comment"># 刷新</span></span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
 <ul>
 <li>客户端网页下载和安装</li>
 </ul>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget http://downloads.sourceforge.net/project/guacamole/current/binary/guacamole-0.9.9.war</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动至 Tomact webapps 目录</span></span><br><span class="line">mv guacamole-0.9.9.war /usr/<span class="built_in">local</span>/tomcat/webapps/guacamole.war</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 Tomcat</span></span><br><span class="line">service tomcat stop</span><br><span class="line">service tomcat start</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">wget http://downloads.sourceforge.net/project/guacamole/current/binary/guacamole-0.9.9.war</span><br><span class="line"></span><br><span class="line"><span class="comment"># 移动至 Tomact webapps 目录</span></span><br><span class="line">mv guacamole-0.9.9.war /usr/<span class="built_in">local</span>/tomcat/webapps/guacamole.war</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启 Tomcat</span></span><br><span class="line">service tomcat stop</span><br><span class="line">service tomcat start</span><br></pre></td></tr></table></figure>
 <h2 id="遇到问题"><a class="headerlink" href="#遇到问题"></a>遇到问题</h2>
 <h3 id="编译失败"><a class="headerlink" href="#编译失败"></a>编译失败</h3>
 <p>缺少<code>gcc</code> <code>libjpeg-turbo-devel</code>这两个库，安装即可</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc libjpeg-turbo-devel</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install -y gcc libjpeg-turbo-devel</span><br></pre></td></tr></table></figure>
 <h3 id="rdp-连接-win10-老是断开"><a class="headerlink" href="#rdp-连接-win10-老是断开"></a>RDP 连接 win10 老是断开</h3>
-<p>guacamole 默认的RDP为标准协议，更改为nla加密协议解决问题，<br>
-注意：nla加密下，username，password必须填写</p>
- <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"security"</span>&gt;</span>nla<span class="tag">&lt;/<span class="name">param</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>guacamole 默认的 RDP 为标准协议，更改为 nla 加密协议解决问题，<br>
+注意：nla 加密下，username，password 必须填写</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">param</span> <span class="attr">name</span>=<span class="string">"security"</span>&gt;</span>nla<span class="tag">&lt;/<span class="name">param</span>&gt;</span></span><br></pre></td></tr></table></figure>
     </div>
   </div>
   
