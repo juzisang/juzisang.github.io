@@ -17,14 +17,14 @@ tags:
 - 域名（不是必须，你也可以用 ip 来访问）
   <!--more-->
 
-## 准备
+## 一、准备
 
 - 群晖
 - 拥有外网 ip 的 vps
 - [frp](https://github.com/fatedier/frp)
 - 域名（不是必须，你也可以用 ip 来访问）
 
-## VPS 设置
+## 二、VPS 设置
 
 ### 下载 Frp
 
@@ -84,7 +84,7 @@ auth_token = token
 ./frps -c ./frps.ini
 ```
 
-## 群晖配置
+## 三、群晖配置
 
 ### 开启 ssh
 
@@ -161,7 +161,7 @@ remote_port = 8080
 ./frps -c ./frps.ini
 ```
 
-## 后台运行
+## 四、后台运行
 
 - 服务端
 

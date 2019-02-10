@@ -12,13 +12,13 @@ Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览�
 
 <!--more-->
 
-## 介绍
+## 一、介绍
 
 Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览器就能操作虚拟机，适用于 Chrome、Firefox、IE9+ 等浏览器（浏览器需要支持 HTML5）。只要在一个服务器成功安装 Guancamole，就可以通过访问一个 web 浏览器去操作我们配置好的虚拟机。当然，作为一个开源的项目，我们可以对 Guacamole 做相应的定制修改，使其适配我们的项目需求，比如做成自动登录的，加上项目权限验证等。
 
 ![images](/images/Centos7下Guacamole安装配置/1535020262371.png)
 
-## 准备
+## 二、准备
 
 - Centos7 x86-64
 - JDK8
@@ -26,14 +26,14 @@ Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览�
 - Guacamole 服务器：guacamole-server-0.9.9.tar.gz
 - Guacamole 客户端：guacamole-0.9.9.war
 
-## JDK 安装
+## 三、JDK 安装
 
 ```bash
 yum update
 yum install java
 ```
 
-## 安装 Tomcat
+## 四、安装 Tomcat
 
 ```bash
 # 创建用户组
@@ -93,7 +93,7 @@ export CATALINA_HOME=/usr/local/tomcat
 source /etc/profile
 ```
 
-## 安装 Guacamole 服务端
+## 五、安装 Guacamole 服务端
 
 ```bash
 # 安装依赖
@@ -121,7 +121,7 @@ service guacd restart
 service guacd status
 ```
 
-## 安装 Guacamole 客户端
+## 六、安装 Guacamole 客户端
 
 ### 配置文件
 
@@ -198,7 +198,7 @@ service tomcat stop
 service tomcat start
 ```
 
-## 遇到问题
+## 七、遇到问题
 
 ### 编译失败
 
