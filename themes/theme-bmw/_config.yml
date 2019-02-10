@@ -47,10 +47,10 @@ reward:
     # 支持多个支付方式
     # src: 二维码位置
     # meta: 二维码提示信息
-    # - src: /images/wechat.png
-    #   meta: "微信扫一扫, 向我投食"
-    # - src: /images/alipay.png
-    #   meta: "支付宝扫一扫, 向我投食"
+    - src: /images/wechat.png
+      meta: "微信扫一扫, 向我投食"
+    - src: /images/alipay.jpg
+      meta: "支付宝扫一扫, 向我投食"
 
 # 是否开启版权声明
 # author: 您的名字
