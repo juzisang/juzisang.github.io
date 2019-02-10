@@ -8,12 +8,12 @@
   
   
   
-  <title>群晖使用Frp实现内网穿透 | 橘子的Blog</title>
+  <title>JS传递数据给IOS Android | 橘子的Blog</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
   
-    <meta name="keywords" content="Linux,Linux,Frp,群晖," />
+    <meta name="keywords" content="Android,Android,JavaScript," />
   
 
   <script>
@@ -212,24 +212,24 @@
 
 <div class="post">
   <h1 class="article-title">
-    <span>群晖使用Frp实现内网穿透</span>
+    <span>JS传递数据给IOS Android</span>
   </h1>
   <div class="article-top-meta">
     <span>
       发布 : 
-      2017-08-20
+      2016-04-24
     </span>
     
       <span>
         分类 : 
-          <a href="/categories/Linux/">
-            Linux
+          <a href="/categories/Android/">
+            Android
           </a>
       </span>
     
     
       <span>
-        浏览 : <span class="article-timer" data-identity="群晖使用Frp实现内网穿透"></span>
+        浏览 : <span class="article-timer" data-identity="JS传递数据给IOS Android"></span>
       </span>
     
   </div>
@@ -238,43 +238,21 @@
 
   <div class="article-content">
     <div class="markdown-body">
-      </li>
-</ul>
-<h2 id="一-准备"><a class="headerlink" href="#一-准备"></a>一、准备</h2>
-<ul>
-<li>群晖</li>
-<li>拥有外网 ip 的 vps</li>
-<li><a href="https://github.com/fatedier/frp" target="_blank" rel="noopener">frp</a></li>
-<li>域名（不是必须，你也可以用 ip 来访问）</li>
-</ul>
-<h2 id="二-vps-设置"><a class="headerlink" href="#二-vps-设置"></a>二、VPS 设置</h2>
-<h3 id="下载-frp"><a class="headerlink" href="#下载-frp"></a>下载 Frp</h3>
-<p>我这是使用的是 64 位的 ubuntu 系统的，如果需要其他的，请自行在 <a href="https://github.com/fatedier/frp/releases" target="_blank" rel="noopener">Github</a> 上下载对应的版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 下载</span><br><span class="line">wget https://github.com/fatedier/frp/releases/download/v0.13.0/frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 解压</span><br><span class="line">tar -zxvf frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 进去frp目录</span><br><span class="line"><span class="built_in">cd</span> frp_0.13.0_linux_amd64</span><br><span class="line">// 删除不需要的文件</span><br><span class="line">rm -rf frpc frpc.ini frpc_full.ini</span><br></pre></td></tr></table></figure>
-<h3 id="frps-配置"><a class="headerlink" href="#frps-配置"></a>Frps 配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">bind_port = 7000</span><br><span class="line">max_pool_count = 5</span><br><span class="line">authentication_timeout = 900</span><br><span class="line"></span><br><span class="line"># 管理端 进入frp自带的web管理界面的帐号密码</span><br><span class="line">dashboard_port = 7500</span><br><span class="line">dashboard_user = user</span><br><span class="line">dashboard_pwd = pwd</span><br><span class="line"></span><br><span class="line"># ssh端口 auth_token就是密钥，随便填个</span><br><span class="line">[ssh]</span><br><span class="line">listen_port = 6000</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 群晖网页</span><br><span class="line">[dms]</span><br><span class="line">listen_port = 5000</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 群晖</span><br><span class="line">[cloud_station]</span><br><span class="line">listen_port = 6690</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line">[ds_photo]</span><br><span class="line">listen_port = 8080</span><br><span class="line">auth_token = token</span><br><span class="line"></span><br><span class="line"># 域名</span><br><span class="line"># vhost_http_port = 80</span><br><span class="line"># subdomain_host = juzisang.com</span><br></pre></td></tr></table></figure>
-<h3 id="启动"><a class="headerlink" href="#启动"></a>启动</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure>
-<h2 id="三-群晖配置"><a class="headerlink" href="#三-群晖配置"></a>三、群晖配置</h2>
-<h3 id="开启-ssh"><a class="headerlink" href="#开启-ssh"></a>开启 ssh</h3>
-<p><img src="/images/%E7%BE%A4%E6%99%96%E4%BD%BF%E7%94%A8Frp%E5%AE%9E%E7%8E%B0%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F/1535020185186.png" alt="images"></p>
-<h3 id="ssh-进入群晖"><a class="headerlink" href="#ssh-进入群晖"></a>ssh 进入群晖</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// ssh进入群晖</span><br><span class="line">ssh juzisang@群晖局域网ip</span><br><span class="line">// 切换root用户</span><br><span class="line">sudo -s</span><br></pre></td></tr></table></figure>
-<h3 id="下载-frp-v2"><a class="headerlink" href="#下载-frp-v2"></a>下载 Frp</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 下载</span><br><span class="line">wget https://github.com/fatedier/frp/releases/download/v0.13.0/frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 解压</span><br><span class="line">tar -zxvf frp_0.13.0_linux_amd64.tar.gz</span><br><span class="line">// 进去frp目录</span><br><span class="line"><span class="built_in">cd</span> frp_0.13.0_linux_amd64</span><br><span class="line">// 删除不需要的文件</span><br><span class="line">rm -rf frps frps.ini frps_full.ini</span><br></pre></td></tr></table></figure>
-<h3 id="frpc-配置"><a class="headerlink" href="#frpc-配置"></a>Frpc 配置</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[common]</span><br><span class="line">server_addr = xx.xx.xx.xx</span><br><span class="line">server_port = 7000</span><br><span class="line">// frps中填的</span><br><span class="line">auth_token = token</span><br><span class="line">pool_count = 1</span><br><span class="line"></span><br><span class="line"># ssh</span><br><span class="line">[ssh]</span><br><span class="line">type = tcp</span><br><span class="line">// 群晖局域网ip</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">// 本地端口</span><br><span class="line">local_port = 22</span><br><span class="line">// 穿透到vps中的端口</span><br><span class="line">remote_port = 6000</span><br><span class="line"></span><br><span class="line"># 群晖网页</span><br><span class="line">[dms]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 5000</span><br><span class="line">remote_port = 5000</span><br><span class="line"># subdomain = nas</span><br><span class="line"></span><br><span class="line"># 群晖同步</span><br><span class="line">[cloud_station]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 6690</span><br><span class="line">remote_port = 6690</span><br><span class="line"></span><br><span class="line"># 群晖照片</span><br><span class="line">[ds_photo]</span><br><span class="line">type = tcp</span><br><span class="line">local_ip = 192.168.31.50</span><br><span class="line">local_port = 80</span><br><span class="line">remote_port = 8080</span><br></pre></td></tr></table></figure>
-<h3 id="启动-v2"><a class="headerlink" href="#启动-v2"></a>启动</h3>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c ./frps.ini</span><br></pre></td></tr></table></figure>
-<h2 id="四-后台运行"><a class="headerlink" href="#四-后台运行"></a>四、后台运行</h2>
-<ul>
-<li>服务端</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./frps -c ./frps.ini &amp;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>客户端</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nohup ./frpc -c ./frpc.ini &amp;</span><br></pre></td></tr></table></figure>
+      <p>最近学习 Html，需要调用传递数据到 IOS 和 Android，写博客记录下~</p>
+<h2 id="一-判断设备是-android-还是-ios"><a class="headerlink" href="#一-判断设备是-android-还是-ios"></a>一、判断设备是 Android 还是 IOS</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> browser = &#123;</span><br><span class="line">  versions: (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> a = navigator.userAgent,</span><br><span class="line">      b = navigator.appVersion;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      trident: a.indexOf(<span class="string">"Trident"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      presto: a.indexOf(<span class="string">"Presto"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      webKit: a.indexOf(<span class="string">"AppleWebKit"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      gecko: a.indexOf(<span class="string">"Gecko"</span>) &gt; <span class="number">-1</span> &amp;&amp; a.indexOf(<span class="string">"KHTML"</span>) == <span class="number">-1</span>,</span><br><span class="line">      mobile: !!a.match(<span class="regexp">/AppleWebKit.*Mobile.*/</span>),</span><br><span class="line">      ios: !!a.match(<span class="regexp">/\(i[^;]+;( U;)? CPU.+Mac OS X/</span>),</span><br><span class="line">      android: a.indexOf(<span class="string">"Android"</span>) &gt; <span class="number">-1</span> || a.indexOf(<span class="string">"Linux"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      iPhone: a.indexOf(<span class="string">"iPhone"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      iPad: a.indexOf(<span class="string">"iPad"</span>) &gt; <span class="number">-1</span>,</span><br><span class="line">      webApp: a.indexOf(<span class="string">"Safari"</span>) == <span class="number">-1</span></span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;)(),</span><br><span class="line">  language: (navigator.browserLanguage || navigator.language).toLowerCase()</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (browser.versions.android) &#123;</span><br><span class="line">  <span class="comment">//Android</span></span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (browser.versions.ios) &#123;</span><br><span class="line">  <span class="comment">//ios</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二-调用-android-的代码"><a class="headerlink" href="#二-调用-android-的代码"></a>二、调用 Android 的代码</h2>
+<p>Android 这边相对 IOS 要简单很多，叫 Android 提供一个类名，方法名直接调用即可</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//这里的Android全部都是Android程序猿给你里，叫他提供这两个调用就可以了</span></span><br><span class="line"><span class="comment">//data为传递过去的数据</span></span><br><span class="line">Android.Android(data);</span><br></pre></td></tr></table></figure>
+<h2 id="三-调用-ios-的代码"><a class="headerlink" href="#三-调用-ios-的代码"></a>三、调用 IOS 的代码</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GoIos</span>(<span class="params">data</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">var</span> iframe = <span class="built_in">document</span>.createElement(<span class="string">"iframe"</span>);</span><br><span class="line">	<span class="keyword">var</span> url = <span class="string">"myapp:"</span>;</span><br><span class="line">	url = url + <span class="string">"&amp;data="</span> + data;</span><br><span class="line">	iframe.src = url;</span><br><span class="line">	iframe.style.display = <span class="string">'none'</span>;</span><br><span class="line">	<span class="built_in">document</span>.body.appendChild(iframe);</span><br><span class="line">	iframe.parentNode.removeChild(iframe);</span><br><span class="line">	iframe = <span class="literal">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>data 为 String 数据，传递过去，IOS 就会触发相应回调了</p>
+<h2 id="四-应用"><a class="headerlink" href="#四-应用"></a>四、应用</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//照上面的写法，代码应该如下</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">GoToApp</span>(<span class="params">data</span>)</span>&#123;</span><br><span class="line"><span class="comment">//只能传递字符串，如果是JSON，转成字符串</span></span><br><span class="line">data = <span class="built_in">JSON</span>.stringify(data);</span><br><span class="line"><span class="keyword">if</span> (browser.versions.android) &#123;</span><br><span class="line">		<span class="comment">//Android</span></span><br><span class="line">		Android.Android(data);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (browser.versions.ios) &#123;</span><br><span class="line">		<span class="comment">//ios</span></span><br><span class="line">		GoIos(data);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考：<br>
+<a href="http://www.skyfox.org/javascript-ios-navive-message.html" target="_blank" rel="noopener">js(javascript)与 ios(Objective-C)相互通信交互</a></p>
     </div>
   </div>
   
@@ -285,7 +263,7 @@
         
           本文作者 : Juzisang <br/>
         
-        原文链接 : <a href="">https://www.juzisang.com/passages/群晖使用Frp实现内网穿透/</a><br>
+        原文链接 : <a href="">https://www.juzisang.com/passages/JS传递数据给IOS Android/</a><br>
         版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
         </blockquote>
       </div>
@@ -351,20 +329,14 @@
           <i class="iconfont icon-06tags"></i>标签: 
           
           <span class="span--tag">
-            <a href="/tags/Linux/">
-              #Linux
+            <a href="/tags/Android/">
+              #Android
             </a>
           </span>
           
           <span class="span--tag">
-            <a href="/tags/Frp/">
-              #Frp
-            </a>
-          </span>
-          
-          <span class="span--tag">
-            <a href="/tags/群晖/">
-              #群晖
+            <a href="/tags/JavaScript/">
+              #JavaScript
             </a>
           </span>
           
@@ -389,13 +361,13 @@
       <div class="nav-pre">
         <i class="iconfont icon-prev"></i>
         上一篇:
-        <a href="/passages/自定义九宫格手势解锁/" target="_self">自定义九宫格手势解锁</a>
+        <a href="/passages/万能适配器/" target="_self">为RecyclerView打造万能适配器，点击事件，5.0水波纹点击效果</a>
       </div>
     
     
       <div class="nav-next">
         下一篇:
-        <a href="/passages/Centos7下Guacamole安装配置/" target="_self">Centos7下Guacamole安装配置</a>
+        <a href="/passages/自定义九宫格手势解锁/" target="_self">自定义九宫格手势解锁</a>
         <i class="iconfont icon-next"></i>
       </div>
     
