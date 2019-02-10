@@ -2,18 +2,21 @@
 title: Centos7下Guacamole安装配置
 date: 2017-09-23
 categories:
- - Linux
+  - Linux
 tags:
- - Linux
- - Guacamole
+  - Linux
+  - Guacamole
 ---
+
+Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览器就能操作虚拟机，适用于 Chrome、Firefox、IE9+ 等浏览器（浏览器需要支持 HTML5）。只要在一个服务器成功安装 Guancamole，就可以通过访问一个 web 浏览器去操作我们配置好的虚拟机。当然，作为一个开源的项目，我们可以对 Guacamole 做相应的定制修改，使其适配我们的项目需求，比如做成自动登录的，加上项目权限验证等。
+
+<!--more-->
 
 ## 介绍
 
 Guacamole 是一个提供远程桌面解决方案的开源项目，通过浏览器就能操作虚拟机，适用于 Chrome、Firefox、IE9+ 等浏览器（浏览器需要支持 HTML5）。只要在一个服务器成功安装 Guancamole，就可以通过访问一个 web 浏览器去操作我们配置好的虚拟机。当然，作为一个开源的项目，我们可以对 Guacamole 做相应的定制修改，使其适配我们的项目需求，比如做成自动登录的，加上项目权限验证等。
-<!--more-->
 
-![images](/images/1535020262371.png )
+![images](/images/Centos7下Guacamole安装配置/1535020262371.png)
 
 ## 准备
 
@@ -172,38 +175,44 @@ basic-user-mapping: /etc/guacamole/user-mapping.xml
 </user-mapping>
 ```
 
- - 添加进环境变量
- ```bash
- vi /etc/profile
- # 末尾添加
- export GUACAMOLE_HOME=/etc/guacamole
- # 刷新
- source /etc/profile
- ```
+- 添加进环境变量
 
- - 客户端网页下载和安装
- ```bash
- wget http://downloads.sourceforge.net/project/guacamole/current/binary/guacamole-0.9.9.war
+```bash
+vi /etc/profile
+# 末尾添加
+export GUACAMOLE_HOME=/etc/guacamole
+# 刷新
+source /etc/profile
+```
 
- # 移动至 Tomact webapps 目录
- mv guacamole-0.9.9.war /usr/local/tomcat/webapps/guacamole.war
+- 客户端网页下载和安装
 
- # 重启 Tomcat
- service tomcat stop
- service tomcat start
- ```
+```bash
+wget http://downloads.sourceforge.net/project/guacamole/current/binary/guacamole-0.9.9.war
 
- ## 遇到问题
+# 移动至 Tomact webapps 目录
+mv guacamole-0.9.9.war /usr/local/tomcat/webapps/guacamole.war
 
- ### 编译失败
- 缺少`gcc` `libjpeg-turbo-devel`这两个库，安装即可
- ```bash
- yum install -y gcc libjpeg-turbo-devel
- ```
+# 重启 Tomcat
+service tomcat stop
+service tomcat start
+```
 
- ### RDP 连接 win10 老是断开
- guacamole 默认的RDP为标准协议，更改为nla加密协议解决问题，
- 注意：nla加密下，username，password必须填写
- ```xml
- <param name="security">nla</param>
- ```
+## 遇到问题
+
+### 编译失败
+
+缺少`gcc` `libjpeg-turbo-devel`这两个库，安装即可
+
+```bash
+yum install -y gcc libjpeg-turbo-devel
+```
+
+### RDP 连接 win10 老是断开
+
+guacamole 默认的 RDP 为标准协议，更改为 nla 加密协议解决问题，
+注意：nla 加密下，username，password 必须填写
+
+```xml
+<param name="security">nla</param>
+```

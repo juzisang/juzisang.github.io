@@ -2,22 +2,33 @@
 title: 群晖使用Frp实现内网穿透
 date: 2017-08-20
 categories:
- - Linux
-tags: 
- - Linux
- - Frp
- - 群晖
+  - Linux
+tags:
+  - Linux
+  - Frp
+  - 群晖
 ---
 
 ## 准备
+
 - 群晖
-- 拥有外网ip的vps
+- 拥有外网 ip 的 vps
 - [frp](https://github.com/fatedier/frp)
-- 域名（不是必须，你也可以用ip来访问）
-<!--more-->
-## VPS设置
-### 下载Frp
-我这是使用的是64位的 ubuntu 系统的，如果需要其他的，请自行在 [Github](https://github.com/fatedier/frp/releases) 上下载对应的版本
+- 域名（不是必须，你也可以用 ip 来访问）
+  <!--more-->
+
+## 准备
+
+- 群晖
+- 拥有外网 ip 的 vps
+- [frp](https://github.com/fatedier/frp)
+- 域名（不是必须，你也可以用 ip 来访问）
+
+## VPS 设置
+
+### 下载 Frp
+
+我这是使用的是 64 位的 ubuntu 系统的，如果需要其他的，请自行在 [Github](https://github.com/fatedier/frp/releases) 上下载对应的版本
 
 ```bash
 // 下载
@@ -29,7 +40,9 @@ cd frp_0.13.0_linux_amd64
 // 删除不需要的文件
 rm -rf frpc frpc.ini frpc_full.ini
 ```
-### Frps配置
+
+### Frps 配置
+
 ```
 [common]
 bind_port = 7000
@@ -64,24 +77,30 @@ auth_token = token
 # vhost_http_port = 80
 # subdomain_host = juzisang.com
 ```
+
 ### 启动
+
 ```
 ./frps -c ./frps.ini
 ```
 
 ## 群晖配置
 
-### 开启ssh
-![images](/images/1535020185186.png)
+### 开启 ssh
 
-### ssh进入群晖
-``` bash
+![images](/images/群晖使用Frp实现内网穿透/1535020185186.png)
+
+### ssh 进入群晖
+
+```bash
 // ssh进入群晖
 ssh juzisang@群晖局域网ip
 // 切换root用户
 sudo -s
 ```
-### 下载Frp
+
+### 下载 Frp
+
 ```bash
 // 下载
 wget https://github.com/fatedier/frp/releases/download/v0.13.0/frp_0.13.0_linux_amd64.tar.gz
@@ -92,7 +111,9 @@ cd frp_0.13.0_linux_amd64
 // 删除不需要的文件
 rm -rf frps frps.ini frps_full.ini
 ```
-### Frpc配置
+
+### Frpc 配置
+
 ```
 [common]
 server_addr = xx.xx.xx.xx
@@ -135,6 +156,7 @@ remote_port = 8080
 ```
 
 ### 启动
+
 ```
 ./frps -c ./frps.ini
 ```
@@ -142,12 +164,13 @@ remote_port = 8080
 ## 后台运行
 
 - 服务端
+
 ```
 nohup ./frps -c ./frps.ini &
 ```
+
 - 客户端
+
 ```
 nohup ./frpc -c ./frpc.ini &
 ```
-
-
