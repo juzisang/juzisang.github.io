@@ -1,6 +1,6 @@
 ---
-title: 关于CORS，你需要知道的
-date: 2018-02-10
+title: 关于 CORS，你需要知道的
+date: 2019-02-10
 categories:
   - Web
 tags:
