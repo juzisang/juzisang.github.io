@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+  
+<head>
+  <meta charset="utf-8">
+  <meta name="author" content="董沅鑫, yuanxin.me@gmail.com" />
+  
+  
+  
+  <title>Readme | 橘子的Blog</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  
+    <meta name="keywords" content="Hexo, theme-bmw" />
+  
+
+  <script>
+    console.log('\n%c Hexo-theme-bmw v4.0 ' + '%c 🎉 https://github.com/dongyuanxin/theme-bmw 🎉\n' + '\n%c View demo online ' + '%c 🔍 https://godbmw.com/ 🔍  \n' , 'color: #fadfa3; background: #030307; padding:3px 0;', '', 'color: #fadfa3; background: #030307; padding:3px 0;', '');
+  </script>
+
+  
+    <meta name="description" content="记录一些知识">
+  
+
+  
+
+  
+    <link rel="icon" href="/images/favicon.ico">
+    <link rel="apple-touch-icon" href="/images/touch-icon.png">
+  
+
+  <link href="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/base.css">
+<link rel="stylesheet" href="/icon/iconfont.css">
+<link rel="stylesheet" href="/css/github-markdown.css">
+<link rel="stylesheet" href="/css/highlight.css">
+
+  <script src="/js/util.js"></script>
+<script src="/js/valine.min.js"></script>
+
+  
+
+  
+    <link href="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/aplayer/1.10.1/APlayer.min.js" async></script>
+  
+
+  
+    <link href="https://cdn.bootcss.com/social-share.js/1.0.16/css/share.min.css" rel="stylesheet">
+  
+  
+  <script src="//cdn.bootcss.com/jquery/3.3.1/jquery.min.js" async></script>
+  
+  
+    <script src="//cdn.jsdelivr.net/npm/leancloud-storage@3.11.0/dist/av-min.js"></script>
+  
+
+</head>
+
+  <body>
+
+    
+
+    <div id="app">
+
+      <div class="header-wrap">
+  <header>
+    <div class="site-brand">
+      <div class="site-title">
+        <a href="/">橘子的Blog</a>
+      </div>
+    </div>
+    <nav class="site-navigation">
+      <ul class="nav-menu">
+      
+        <li class="nav-item" data-path="/">
+          
+            <a 
+              href="/"
+              target="_self"
+            >
+              主页
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          
+            <a 
+              href="/archives/"
+              target="_self"
+            >
+              归档
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          
+            <a 
+              href="/categories/"
+              target="_self"
+            >
+              分类
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          
+            <a 
+              href="/tags/"
+              target="_self"
+            >
+              标签
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          
+            <a 
+              href="/friends/"
+              target="_self"
+            >
+              友链
+            </a>
+          
+        </li>
+      
+        <li class="nav-item" data-path="">
+          
+            <a href="javascript:void(0);" v-else>抓到我</a>
+            <ul class="nav-menu--dropdown">
+              
+                <li>
+                  <a 
+                    href="https://github.com/JuZiSang" 
+                    target="_blank"
+                  >
+                    Github
+                  </a>
+                </li>
+              
+                <li>
+                  <a 
+                    href="https://www.zhihu.com/people/ju-zi-sang-88-97/activities" 
+                    target="_blank"
+                  >
+                    知乎
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+      
+      </ul>
+    </nav>
+    <i class="iconfont icon-menu"></i>
+  </header>
+</div>
+
+<script>
+  let links = document.querySelectorAll('.nav-item');
+  for(let link of links){
+    let childrenLink = link.querySelector('ul');
+    link.addEventListener('mouseenter', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown active";
+      }
+    })
+    link.addEventListener('mouseleave', () => {
+      if(childrenLink) {
+        childrenLink.className = "nav-menu--dropdown";
+      }
+    })
+  }
+  let rootRealPath = getRealPath(window.location.pathname, true);
+  for(let link of links) {
+    let linkPath = link.getAttribute("data-path");
+    if(linkPath && getRealPath(linkPath, true) === rootRealPath) {
+      link.className = "nav-item hover";
+    }
+  }
+
+  let iconMenu = document.querySelector("i.iconfont.icon-menu"),
+    iconMenuClicked = false;
+  let navDOM = document.querySelector("nav.site-navigation");
+  iconMenu.addEventListener("click", () => {
+    iconMenuClicked 
+      ? navDOM.className = "site-navigation active"
+      : navDOM.className = "site-navigation";
+    iconMenuClicked = !iconMenuClicked;
+  })
+</script>
+
+      
+
+
+
+
+
+
+
+
+<div class="container post-index">
+
+  
+
+<div class="post">
+  <h1 class="article-title">
+    <span>Readme</span>
+  </h1>
+  <div class="article-top-meta">
+    <span>
+      发布 : 
+      2019-02-19
+    </span>
+    
+    
+      <span>
+        浏览 : <span class="article-timer" data-identity="readme.html"></span>
+      </span>
+    
+  </div>
+
+  
+
+  <div class="article-content">
+    <div class="markdown-body">
+      <h3 id="基本信息"><a class="headerlink" href="#基本信息"></a>基本信息</h3>
+<ul>
+<li>罗峰 / 男</li>
+<li>手机：188987373**</li>
+<li>Email：juziexe@gmail.com</li>
+<li>电子科技大学 / 大专 / 计算机应用技术</li>
+<li>工作年限：3年</li>
+<li>技术博客：<a href="https://www.juzisang.com/">https://www.juzisang.com/</a></li>
+<li>Github：<a href="https://github.com/juzisang" target="_blank" rel="noopener">https://github.com/juzisang</a></li>
+<li>期望职位：Web前端程序员</li>
+<li>期望薪资：月薪13k~16k</li>
+</ul>
+<hr>
+<h3 id="关于我"><a class="headerlink" href="#关于我"></a>关于我</h3>
+<p>一年 Android 开发，两年 Web 开发经验，喜欢尝试各种新技术，对 Flutter 跨平台开发，Nodejs 后端开发，以及 Linux 项目部署及运维都有不同程度的掌握</p>
+<h3 id="技能清单"><a class="headerlink" href="#技能清单"></a>技能清单</h3>
+<ul>
+<li>熟练运用 CSS3、Html5 编写兼容主流浏览器的页面</li>
+<li>熟悉原生 JavaScript 及 ES6 语法，有 TypeScript 项目经验</li>
+<li>熟练掌握常用框架（Vue、React）及其生态库的使用，了解 ReactNative</li>
+<li>熟悉使用 Webpack、Gulp 等工具，搭建开发环境，完成测试，正式环境下的打包</li>
+<li>熟悉使用 Git，ESLint 等工具，完成团队合作开发，及制定代码规范</li>
+<li>了解 Http 协议，能够根据 Http 请求报文、响应报文和状态码排查问题</li>
+<li>了解 Nodejs，能利用 express、koa2、nestjs 等库完成后端开发，及SSR预渲染</li>
+<li>熟系 Android 开发，能独立完成原生 Android App 的开发工作</li>
+</ul>
+<hr>
+<h3 id="工作经历"><a class="headerlink" href="#工作经历"></a>工作经历</h3>
+<h4 id="深圳小马未来科技-span-style-font-size-14px-color-999-2018-06-2018-12-web前端开发-span"><a class="headerlink" href="#深圳小马未来科技-span-style-font-size-14px-color-999-2018-06-2018-12-web前端开发-span"></a>深圳小马未来科技   <span style="font-size:14px;color:#999;">( 2018.06 ~ 2018.12 )   Web前端开发</span></h4>
+<ul>
+<li>独立完成公司前端所有开发工作(PC，H5，小程序)，3个月完成项目从0到上线</li>
+<li>前端采用 Vue 全家桶 + Tsx 写法，小程序使用 Taro 完成</li>
+<li>与后端、测试、产品经理讨论新需求，及开发测试的时间分配问题</li>
+<li>及时解决学生及老师反馈的Bug，以及使用疑问</li>
+</ul>
+<h4 id="深圳市交投科技-span-style-font-size-14px-color-999-2015-10-2018-04-android-web开发-span"><a class="headerlink" href="#深圳市交投科技-span-style-font-size-14px-color-999-2015-10-2018-04-android-web开发-span"></a>深圳市交投科技  <span style="font-size:14px;color:#999;"> ( 2015.10 ~ 2018.04 )   Android、Web开发</span></h4>
+<ul>
+<li>参与公司Android开发，完成重构及版本迭代等工作，提高项目可维护性</li>
+<li>参与前端项目的技术选型，使用 Vue 全家桶代替  jQuery，提高开发速度</li>
+<li>公司多个项目的主力程序员，负责攻克技术难点，以及同事的开发疑问</li>
+<li>多次获得公司表彰：技术创新、2016，2017两年度优秀员工</li>
+</ul>
+<h3 id="项目经历"><a class="headerlink" href="#项目经历"></a>项目经历</h3>
+<h4 id="vip-young-web端-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"><a class="headerlink" href="#vip-young-web端-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"></a>VIP YOUNG Web端   <span style="font-size:12px;color:#999;">深圳小马未来科技  Web开发（唯一）</span></h4>
+<p>面向学生的做题前端界面</p>
+<ul>
+<li>使用 VueCli3 + Vue全家桶 + TypeScript，扩展 VueCli3 配置，支持 <code>Tsx</code> 文件，<code>CssModules</code> 方案</li>
+<li>使用  <code>vue-class-component</code> class方式编写Vue，搭配 Babel 插件 <code>vue-jsx-sync</code> 、<code>jsx-v-model</code>完善体验</li>
+<li>WebRTC 来录取学生跟读录音，并且使用 WebAssembly 将录音转为MP3格式，减小文件大小</li>
+<li>Rem 屏幕适配方案，减少不同屏幕适配工作</li>
+</ul>
+<h4 id="vip-young-助教端-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"><a class="headerlink" href="#vip-young-助教端-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"></a>VIP YOUNG 助教端   <span style="font-size:12px;color:#999;">深圳小马未来科技  Web开发（唯一）</span></h4>
+<p>助教和老师布置作业，以及录入题目，学生学习情况统计及分析的后台管理系统</p>
+<ul>
+<li>使用 Rxjs + VueRx 简化数据交互步骤，减少重复代码，提高开发效率</li>
+<li>后端管理系统使用 <code>vue-element-admin</code>模板，扩展了标签重命名，多级页面，前端权限管理</li>
+<li>完成40+个，增删改查功能界面的开发</li>
+</ul>
+<h4 id="vip-young-小程序-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"><a class="headerlink" href="#vip-young-小程序-span-style-font-size-12px-color-999-深圳小马未来科技-web开发-唯一-span"></a>VIP YOUNG 小程序   <span style="font-size:12px;color:#999;">深圳小马未来科技  Web开发（唯一）</span></h4>
+<ul>
+<li>第一个版本采用 Mpvue 编写，后续觉得 Bug 过多，使用 Taro 重构</li>
+<li>React 语法，使用 Dva 进行状态管理</li>
+</ul>
+<h4 id="交通在手app-span-style-font-size-12px-color-999-深圳市交投科技-android开发-2人-span"><a class="headerlink" href="#交通在手app-span-style-font-size-12px-color-999-深圳市交投科技-android开发-2人-span"></a>交通在手App   <span style="font-size:12px;color:#999;">深圳市交投科技  Android开发（2人）</span></h4>
+<p>深圳市交委向市民推出的综合交通信息类App，由于项目年代比较久远不利于维护，后由我负责重构</p>
+<ul>
+<li>采用组件化的开发方式，将不同模块拆分成单独Module开发，ARouter解决不同模块的跳转及通讯问题</li>
+<li>底层网络请求是在Rxjava、Retrofit的基础上，抽离到公有Lib中，方便各个模块调用</li>
+<li>在细节上我运用了Butterknife、Stetho、RxBus等类库来提高开发效率，方便调试</li>
+<li>各类SDK运用，如：高德地图、友盟推送、友盟日志采集等等…</li>
+</ul>
+<h4 id="宝安区中控平台-span-style-font-size-12px-color-999-深圳市交投科技-web开发-3人-span"><a class="headerlink" href="#宝安区中控平台-span-style-font-size-12px-color-999-深圳市交投科技-web开发-3人-span"></a>宝安区中控平台   <span style="font-size:12px;color:#999;">深圳市交投科技 Web开发（3人）</span></h4>
+<p>宝安区政府，大数据展示平台</p>
+<ul>
+<li>使用 Vue全家桶、Echarts3、Guacamole H5 远程桌面库、WebSocket 等技术完成编写</li>
+<li>大屏展示端：基于 Vue 封装 Echarts3 图表组件，Api 请求封装，整体页面框架搭建</li>
+<li>平板控制端：Hybrid 应用，Guacamole 远程大屏PC，扩展源码适配平板端点击、拖拽等手势</li>
+<li>平板端使用 WebSocket 连接大屏，来做到发送消息，切换指定页面</li>
+</ul>
+<h4 id="datav-span-style-font-size-12px-color-999-深圳市交投科技-web开发-3人-span"><a class="headerlink" href="#datav-span-style-font-size-12px-color-999-深圳市交投科技-web开发-3人-span"></a>Datav <span style="font-size:12px;color:#999;">深圳市交投科技 Web开发（3人）</span></h4>
+<p>拖拽生成界面的可视化系统</p>
+<ul>
+<li>使用Vue全家桶，搭建编辑端，预览端，编写页面主体框架，以及指导后续参与开发的人员</li>
+<li>组件核心库开发，制定组件开发的规范</li>
+<li>组件开发脚手架命令行程序开发，基于Webpack,提供init,run,build等功能</li>
+</ul>
+
+    </div>
+  </div>
+  
+    <div class="copy-right">
+      <div class="markdown-body">
+        <blockquote>
+        
+        
+          本文作者 : Juzisang <br/>
+        
+        原文链接 : <a href="">https://www.juzisang.com/me/readme.html</a><br>
+        版权声明 : 本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议。转载请注明出处！
+        </blockquote>
+      </div>
+    </div>
+  
+  
+  
+    <div class="social-share"
+  style="margin-top: -2rem"
+  data-wechat-qrcode-title="<p>微信扫一扫</p>"
+  data-wechat-qrcode-helper="<p>微信右上角, 扫一扫分享</p>"
+   data-sites="qzone, qq, weibo, wechat, douban, google, facebook, twitter" 
+  
+>
+  <span style="color: #6b7487; font-size: 1.4rem;">分享到: </span>
+</div>
+<script src="https://cdn.bootcss.com/social-share.js/1.0.16/js/social-share.min.js" async>
+  
+
+  
+    <div id="reward">
+  
+    <p id="reward-meta">知识 & 情怀 | 二者兼得</p>
+  
+  <button id="reward-btn">
+    
+    <span>投食</span>
+  </button>
+  <div id="reward-qrcode">
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/wechat.png" alt="微信扫一扫, 向我投食">
+        <p class="qrcode-meta">微信扫一扫, 向我投食</p>
+      </div>
+    
+      <div class="reward-qrcode--container">
+        <img class="qrcode-img" src="/images/alipay.jpg" alt="支付宝扫一扫, 向我投食">
+        <p class="qrcode-meta">支付宝扫一扫, 向我投食</p>
+      </div>
+    
+  </div>
+
+</div>
+
+<script>
+  (() => {
+    let button = document.querySelector('#reward-btn'),
+      qrcode = document.querySelector('#reward-qrcode'),
+      display = false;
+    
+    button.addEventListener('click', () => {
+      qrcode.style.display = display ? 'none' : 'block'
+      display = !display
+    }, false)
+  })()
+</script>
+  
+
+  <div class="article-footer">
+    <div class="article-meta pull-left">
+      <span>
+        
+      </span>
+    </div>
+    <div class="article-meta pull-right">
+    </div>
+  </div>
+</div>
+
+
+  <aside id="sidebar">
+    <p id="sidebar-header"></p>
+    <ol id="sidebar-toc"></ol>
+  </aside>
+  <script async>setTimeout(generateToc, 10);</script>
+
+
+  <nav class="post-navigation">
+    
+    
+  </nav>
+
+  
+    <a href="#comment" class="comment-anchor"></a>
+<div class="comment-title"><i class="iconfont icon-footprint"></i> 留下足迹 <i class="iconfont icon-footprint"></i></div>
+<div id="vcomments"></div>
+
+<script defer>
+  if( true ) {
+    let path = getRealPath()
+    new Valine({
+      el: "#vcomments",
+      appId: "qyAfO3GTXEdyGYeVXykVuR3H-gzGzoHsz",
+      appKey: "pIlfDQBLigKDyFi9V6BbsbTP",
+      notify: false,
+      verify: false,
+      avatar: "robohash",
+      placeholder: "正确填写邮箱, 才能及时收到回复哦♪(^∇^*)",
+      path
+    });
+  }
+</script>
+   
+
+  
+    <script defer>
+const valineAPI = (() => {
+  try {
+    AV.init("qyAfO3GTXEdyGYeVXykVuR3H-gzGzoHsz", "pIlfDQBLigKDyFi9V6BbsbTP");
+  } catch(error) {}
+  const isExist = (identity) => {
+    identity = identity || getRealPath();
+    let query = new AV.Query('Timer');
+    return new Promise((resolve, reject) => {
+      query.equalTo("identity", identity);
+      query.find().then(results => {
+        resolve(results.length > 0);
+      }, error => reject(error));
+    })
+  }
+
+  const _get = (identity) => {
+    let query = null;
+    if(identity && identity instanceof Array){
+      let querys = [];
+      for(let i = 0; i < identity.length; ++i) {
+        querys[i] = new AV.Query('Timer');
+        querys[i].equalTo('identity', identity[i]);
+      }
+      query = AV.Query.or.apply(null ,querys);
+    } else {
+      identity = identity || getRealPath();
+      query = new AV.Query("Timer");
+      query.equalTo("identity", identity);
+    }
+
+    return new Promise((resolve, reject) => {
+      query.find()
+      .then(results => resolve(results))
+      .catch(error => reject(error))
+    })
+  }
+
+  const create = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let Todo = AV.Object.extend('Timer');
+      let todo = new Todo();
+      todo.set("times", 1);
+      todo.set("identity", identity);
+      todo.save().then(res => resolve(true), error => reject(error));
+    })
+  }
+
+  const update = (identity) => {
+    identity = identity || getRealPath();
+    return new Promise((resolve, reject) => {
+      let query = new AV.Query('Timer');
+      query.equalTo("identity", identity);
+      query.find().then(todos => {
+        todos.forEach(todo => {
+          todo.set("times", todo.attributes.times + 1);
+        });
+        return AV.Object.saveAll(todos);
+      }).then(todos => resolve(true), error => reject(error));
+    })
+  }
+
+  return {
+    isExist,
+    _get,
+    update,
+    create
+  }
+})()
+
+const calcAndWriteTimes = () => {
+  let isPost = false;
+
+  let timerAllDOM = document.querySelectorAll(".article-timer");
+
+  if(isPost) {
+    let identity = timerAllDOM[0].getAttribute("data-identity");
+    valineAPI.isExist(identity)
+    .then(exist => {
+      if(exist) {
+        return valineAPI.update(identity);
+      }
+      return new Promise(resolve => resolve(true));
+    })
+    .then( succuess => valineAPI._get(identity))
+    .then( result => timerAllDOM[0].innerText = result[0].attributes.times)
+    .catch(error => console.log(error.message))
+    return ;
+  }
+
+  let timerDOMCache = {};
+
+  for(let timerDOM of timerAllDOM) {
+    let identity = timerDOM.getAttribute("data-identity");
+    if(timerDOMCache.hasOwnProperty(identity)){
+      timerDOMCache[identity].dom.push(timerDOM);
+    }else{
+      timerDOMCache[identity] = {
+        dom: [timerDOM],
+        times: undefined
+      };
+    }
+  }
+
+  let identities = Object.keys(timerDOMCache);
+  valineAPI._get(identities).then(results => {
+    for(let result of results) {
+      let {identity, times} = result.attributes;
+      timerDOMCache[identity].times = times;
+      timerDOMCache[identity].dom.map(item => item.innerText = times);
+    }
+    for(let identity of identities) {
+      if(timerDOMCache[identity].times){
+        continue;
+      }
+      timerDOMCache[identity].dom.map(item => item.innerText = 1);
+      valineAPI.create(identity);
+    }
+  }).catch(error => console.log(error.message))
+}
+
+if(true){
+  calcAndWriteTimes();
+}
+</script>
+   
+
+</div>
+
+
+      <footer>
+  <p class="site-info">
+    博客已萌萌哒运行<span id="time-to-now"></span><span class="my-face">(●'◡'●)ﾉ♥</span>
+    <br>
+    Theme - <a href="https://github.com/dongyuanxin/theme-bmw">BMW</a> | Made With 💗 | Powered by <a href="https://godbmw.com/">GodBMW</a>
+    <br>
+    
+  </p>
+</footer>
+
+
+
+<script>
+const timeToNowDOM = document.querySelector("#time-to-now");
+const startTimestamp = new Date(2016, 4, 10).getTime();
+
+const updateTimeStr = () => {
+  let offset = parseInt(
+      (new Date().getTime() - startTimestamp) / 1000,
+      10
+    ),
+    day = Math.floor(offset / 86400),
+    hour = Math.floor((offset % 86400) / 3600),
+    minute = Math.floor(((offset % 86400) % 3600) / 60),
+    second = Math.floor(((offset % 86400) % 3600) % 60);
+  timeToNowDOM.innerHTML =
+    day + "天" + hour + "小时" + minute + "分钟" + second + "秒";
+  setTimeout(updateTimeStr, 500);
+}
+
+setTimeout(updateTimeStr, 500);
+</script>
+
+
+      <div class="back-to-top hidden">
+  <span>
+    <i class="iconfont icon-60"></i><span></span>%
+  </span>
+</div>
+
+<script>
+const updateIconToTop = percent => {
+  let dom = document.querySelector(".back-to-top span span");
+  dom.innerText = percent;
+  if(percent < 1) {
+    document.querySelector(".back-to-top").className = "back-to-top hidden";
+  } else {
+    document.querySelector(".back-to-top").className = "back-to-top";
+  }
+}
+
+const handleScoll = () => {
+  let isRunning = false;
+  return () => {
+    if (isRunning) return;
+    isRunning = true;
+    window.requestAnimationFrame(timestamp => {
+      let scrollTop =
+          document.documentElement.scrollTop || document.body.scrollTop,
+        scrollHeight =
+          document.documentElement.scrollHeight ||
+          document.body.scrollHeight,
+        clientHeight =
+          document.documentElement.clientHeight ||
+          document.body.clientHeight;
+      isRunning = false;
+      if (scrollTop <= 1) {
+        updateIconToTop(0);
+        return;
+      }
+      if (scrollTop + clientHeight >= scrollHeight) {
+        updateIconToTop(100);
+      } else {
+        updateIconToTop(parseInt(
+          100 * scrollTop / (scrollHeight - clientHeight),
+          10
+        ));
+      }
+    });
+  };
+}
+
+const backToTop = () => {
+  let scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop,
+    delay = 10,
+    time = 200;
+  if (scrollTop <= 20) {
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+    return;
+  }
+  let step = Math.ceil(scrollTop * delay / time);
+  let timer = setInterval(() => {
+    scrollTop =
+      document.documentElement.scrollTop || document.body.scrollTop;
+    if (scrollTop - step <= 0) {
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+      clearInterval(timer);
+    } else {
+      document.documentElement.scrollTop = scrollTop - step;
+      document.body.scrollTop = scrollTop - step;
+    }
+  }, delay);
+}
+
+document.addEventListener("scroll", handleScoll(), false);
+
+document.querySelector(".back-to-top").addEventListener("click", backToTop, false);
+
+</script>
+
+    </div>
+
+    
+      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML" async></script>
+<script>
+  (() => {
+    const mathjaxConfig = {
+      showProcessingMessages: false, //关闭js加载过程信息
+      messageStyle: "none", //不显示信息
+      jax: ["input/TeX", "output/HTML-CSS"],
+      tex2jax: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]], //行内公式选择符
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]], //段内公式选择符
+        skipTags: ["script", "noscript", "style", "textarea", "pre", "code", "a"] //避开某些标签
+      },
+      "HTML-CSS": {
+        availableFonts: ["STIX", "TeX"], //可选字体
+        showMathMenu: false //关闭右击菜单显示
+      }
+    }
+
+    let mathjaxInterval = setInterval(() => {
+      if(!window.MathJax){
+        return;
+      }
+      window.MathJax.Hub.Config(mathjaxConfig)
+      window.MathJax.Hub.Queue(["Typeset", MathJax.Hub, document.getElementById('app')])
+
+      clearInterval(mathjaxInterval)
+    }, 10)    
+  })()
+</script>
+    
+
+    <script src="https://cdn.bootcss.com/fancybox/3.5.2/jquery.fancybox.min.js" async></script>
+<script async>
+  let fancyTimer = setInterval(function(){
+    if(!window.$){
+      return;
+    }
+    $(document).ready(function() {
+      $(".post img").each(function () {
+        if($(this).parent().get(0).tagName.toLowerCase() === "a") {
+          return;
+        }
+        // $(this).attr("data-fancybox", "gallery"); // if you add 'data-fancybox', img will display after showed
+        var element = document.createElement("a");
+        $(element).attr("data-fancybox", "gallery");
+        $(element).attr("href", $(this).attr("src"));
+        $(this).wrap(element);
+      });
+      
+      clearInterval(fancyTimer);
+    });
+  }, 10);
+</script>
+
+    
+  </body>
+
+</html>
