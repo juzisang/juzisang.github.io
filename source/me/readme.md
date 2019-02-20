@@ -31,7 +31,7 @@ tags:
 - 熟悉使用 Webpack、Gulp 等工具，搭建开发环境，完成测试，正式环境下的打包
 - 熟悉使用 Git，ESLint 等工具，完成团队合作开发，及制定代码规范
 - 了解 Http 协议，能够根据 Http 请求报文、响应报文和状态码排查问题
-- 了解 Nodejs，能利用 express、koa2、nestjs 等库完成后端开发，及SSR预渲染
+- 了解 Nodejs，能利用 Express、Koa2、Nestjs 等库完成后端开发，及SSR预渲染
 - 熟系 Android 开发，能独立完成原生 Android App 的开发工作
 
 ---
