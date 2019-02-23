@@ -15,7 +15,7 @@ tags:
  - 技术博客：https://www.juzisang.com/
  - Github：https://github.com/juzisang
  - 期望职位：Web前端程序员
- - 期望薪资：月薪13k~16k
+ - 期望薪资：月薪15k~20k
 
 ---
 
